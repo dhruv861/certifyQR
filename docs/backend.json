@@ -1,0 +1,63 @@
+{
+  "entities": {
+    "certificate": {
+      "title": "Certificate",
+      "description": "A certificate of completion.",
+      "type": "object",
+      "properties": {
+        "traineeName": {
+          "type": "string",
+          "description": "The name of the person who completed the course."
+        },
+        "courseName": {
+          "type": "string",
+          "description": "The name of the course."
+        },
+        "supplementName": {
+          "type": "string",
+          "description": "An optional supplement name for the certificate."
+        },
+        "completionDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date the course was completed."
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date the certificate expires."
+        },
+        "trainingProvider": {
+          "type": "string",
+          "description": "The name of the training provider."
+        },
+        "instructorName": {
+          "type": "string",
+          "description": "The name of the instructor."
+        },
+        "telephone": {
+          "type": "string",
+          "description": "The contact telephone number for the trainee."
+        }
+      },
+      "required": [
+        "traineeName",
+        "courseName",
+        "completionDate",
+        "instructorName",
+        "trainingProvider"
+      ]
+    }
+  },
+  "auth": {
+    "providers": []
+  },
+  "firestore": {
+    "/iadc_certificates/{certificateId}": {
+      "schema": {
+        "$ref": "#/entities/certificate"
+      },
+      "description": "Stores individual certificate documents."
+    }
+  }
+}

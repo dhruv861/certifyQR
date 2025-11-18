@@ -1,0 +1,16 @@
+{
+  "placeholderImages": [
+    {
+      "id": "certificate-seal",
+      "description": "A golden seal of approval for the certificate.",
+      "imageUrl": "https://images.unsplash.com/photo-1646728149824-0d1ba11e4add?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzZWFsJTIwZ29sZHxlbnwwfHx8fDE3NjMxMzY0MTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "seal gold"
+    },
+    {
+      "id": "iadc-logo",
+      "description": "IADC Wellsharp Logo",
+      "imageUrl": "https://images.unsplash.com/photo-1628760584600-6c31148991e9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxpYWRjJTIwbG9nb3xlbnwwfHx8fDE3NjMzNzIzOTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "iadc logo"
+    }
+  ]
+}
