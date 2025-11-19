@@ -10,7 +10,7 @@ import { Award, List } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useFirebase } from "@/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import Link from "next/link";
@@ -44,9 +44,21 @@ function HomePage() {
       const result = await generateCertificateAction(data);
 
       if (result.success && result.data) {
-        // 2. Client receives data and writes to Firestore
+        // 2. Client receives data and validates uniqueness
         const newCertificate = result.data;
         const certRef = doc(firestore, "iadc_certificates", newCertificate.id);
+
+        // Check if certificate ID already exists
+        const existingDoc = await getDoc(certRef);
+        if (existingDoc.exists()) {
+          toast({
+            variant: "destructive",
+            title: "Duplicate Certificate ID",
+            description: `A certificate with ID "${newCertificate.idNumber}" already exists. Please use a different ID Number.`,
+          });
+          setIsLoading(false);
+          return;
+        }
 
         // Using client-side setDoc
         setDoc(certRef, newCertificate).catch(async (serverError) => {
@@ -81,7 +93,7 @@ function HomePage() {
         toast({
           variant: "destructive",
           title: "Error Generating Certificate",
-          description: "success" in result ? "An unexpected error occurred. Please try again." : (result.error || "An unexpected error occurred. Please try again."),
+          description: "An unexpected error occurred. Please try again.",
         });
       }
     } catch (error) {

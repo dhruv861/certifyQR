@@ -19,8 +19,8 @@ export function CertificateSecondPage({ data }: CertificateSecondPageProps) {
     });
   };
 
-  // Extract certificate number from ID - cleaner format
-  const certificateNumber = data.id.replace("CERT-", "").replace(/-/g, "");
+  // Use the idNumber from the form data
+  const certificateNumber = data.idNumber;
 
   return (
     <div id="certificate-page-2" className="bg-white w-full aspect-[1/1.414] p-6 flex gap-6 px-9">
@@ -53,72 +53,72 @@ export function CertificateSecondPage({ data }: CertificateSecondPageProps) {
 
       {/* Right Side - Course Completion Card */}
       <div className="w-1/2">
-        <div className="border border-gray-800 inline-block">
+        <div className="w-[380px] bg-gradient-to-br from-white to-gray-50 border border-gray-400 shadow-lg font-sans">
           {/* Header */}
-          <div className="bg-red-700 text-white text-center py-1 px-4">
-            <h2 className="text-xs font-bold">IADC WellSharp Course Completion Card</h2>
-          </div>
+          <div className="bg-[#D41826] text-white text-center py-1 font-bold text-xs tracking-wide">IADC WellSharp Course Completion Card</div>
 
-          {/* Certificate Details Table */}
-          <div className="text-xs">
-            {/* Row 1 - Trainee Name */}
-            <div className="bg-gray-200 px-2 py-1 border-b border-gray-400">
-              <span className="text-black font-medium">Trainee Name: </span>
-              <span className="font-bold text-black">{data.traineeName}</span>
+          {/* Certificate Details */}
+          <div className="p-2 space-y-0">
+            {/* Trainee Name */}
+            <div className="flex items-end">
+              <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Trainee Name</span>
+              <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">{data.traineeName}</div>
             </div>
 
-            {/* Row 2 - Course Name */}
-            <div className="bg-white px-2 py-1 border-b border-gray-400">
-              <span className="text-black font-medium">Course Name: </span>
-              <span className="font-bold text-black">{data.courseName}</span>
+            {/* Course Name */}
+            <div className="flex items-end mt-1">
+              <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Course Name</span>
+              <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">{data.courseName}</div>
             </div>
 
-            {/* Row 3 - Supplement Name */}
-            <div className="bg-gray-200 px-2 py-1 border-b border-gray-400">
-              <span className="text-black font-medium">Supplement Name: </span>
-              <span className="font-bold text-black">{data.supplementName || ""}</span>
+            {/* Supplement Name */}
+            <div className="flex items-end mt-1">
+              <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Supplement Name</span>
+              <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs h-4 leading-tight">{data.supplementName || ""}</div>
             </div>
 
-            {/* Row 4 - Completion Date and Expiration Date */}
-            <div className="bg-white px-2 py-1 border-b border-gray-400 flex">
-              <div className="flex-1">
-                <span className="text-black font-medium">Completion Date: </span>
-                <span className="font-bold text-black">{formatDate(data.completionDate)}</span>
+            {/* Completion Date and Expiration Date */}
+            <div className="flex gap-2 mt-1">
+              <div className="flex items-end w-1/2">
+                <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Completion Date</span>
+                <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">{formatDate(data.completionDate)}</div>
               </div>
-              <div className="flex-1">
-                <span className="text-black font-medium">Expiration Date: </span>
-                <span className="font-bold text-black">{data.expirationDate ? formatDate(data.expirationDate) : ""}</span>
-              </div>
-            </div>
-
-            {/* Row 5 - Provider */}
-            <div className="bg-gray-200 px-2 py-1 border-b border-gray-400">
-              <span className="text-black font-medium">Provider: </span>
-              <span className="font-bold text-black">{data.trainingProvider}</span>
-            </div>
-
-            {/* Row 6 - Provider # and Phone # */}
-            <div className="bg-white px-2 py-1 border-b border-gray-400 flex">
-              <div className="flex-1">
-                <span className="text-black font-medium">Provider #: </span>
-                <span className="font-bold text-black">00001153</span>
-              </div>
-              <div className="flex-1">
-                <span className="text-black font-medium">Phone #: </span>
-                <span className="font-bold text-black">{data.telephone || ""}</span>
+              <div className="flex items-end w-1/2">
+                <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Expiration Date</span>
+                <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">
+                  {data.expirationDate ? formatDate(data.expirationDate) : ""}
+                </div>
               </div>
             </div>
 
-            {/* Row 7 - Instructor Name */}
-            <div className="bg-gray-200 px-2 py-1 border-b border-gray-400">
-              <span className="text-black font-medium">Instructor Name: </span>
-              <span className="font-bold text-black">{data.instructorName}</span>
+            {/* Provider */}
+            <div className="flex items-end mt-1">
+              <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Provider</span>
+              <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">{data.trainingProvider}</div>
             </div>
 
-            {/* Row 8 - Certificate Number */}
-            <div className="bg-white px-2 py-1">
-              <span className="text-black font-medium">Certificate Number: </span>
-              <span className="font-bold text-black">{certificateNumber}</span>
+            {/* Provider # and Phone # */}
+            <div className="flex gap-2 mt-1">
+              <div className="flex items-end w-5/12">
+                <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Provider #</span>
+                <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">00001153</div>
+              </div>
+              <div className="flex items-end w-7/12">
+                <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Phone #</span>
+                <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">{data.telephone || ""}</div>
+              </div>
+            </div>
+
+            {/* Instructor Name */}
+            <div className="flex items-end mt-1">
+              <span className="text-[11px] font-bold text-gray-700 whitespace-nowrap">Instructor Name</span>
+              <div className="flex-grow border-b border-gray-400 ml-1 px-1 text-gray-900 text-xs leading-tight">{data.instructorName}</div>
+            </div>
+
+            {/* Certificate Number */}
+            <div className="flex justify-end items-center mt-2 pt-1">
+              <span className="text-[9px] text-gray-600 mr-1">Certificate Number:</span>
+              <span className="text-[9px] text-gray-900 tracking-wide">{certificateNumber}</span>
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import type { Certificate, FormValues, ActionResult } from "@/lib/types";
 // NOTE: No longer importing server-side firebase
 
 const formSchema = z.object({
+  idNumber: z.string().min(2, "ID Number must be at least 2 characters."),
   traineeName: z.string().min(2, "Name must be at least 2 characters."),
   courseName: z.string().min(3, "Course name must be at least 3 characters."),
   supplementName: z.string().optional(),
@@ -23,9 +24,10 @@ export async function generateCertificateAction(formData: FormValues): Promise<A
     const validatedData = formSchema.parse(formData);
 
     // This action no longer writes to Firestore.
-    // It only generates the ID and QR code and returns the data.
+    // It only generates the QR code and returns the data.
+    // Use the user-provided idNumber as the certificate ID
 
-    const id = `CERT-${Date.now()}-${uuidv4().substring(0, 6).toUpperCase()}`;
+    const id = `${validatedData.idNumber}`;
 
     const headersList = await headers();
     const host = headersList.get("host") || "localhost:3000";
