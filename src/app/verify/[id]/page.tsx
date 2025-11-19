@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { doc, onSnapshot } from 'firebase/firestore';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { ShieldAlert, Loader2, ArrowLeft } from 'lucide-react';
-import type { CertificateData, Certificate } from '@/lib/types';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { useFirebase } from '@/firebase';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { doc, onSnapshot } from "firebase/firestore";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ShieldAlert, Loader2, ArrowLeft } from "lucide-react";
+import type { CertificateData, Certificate } from "@/lib/types";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useFirebase } from "@/firebase";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 const iadcLogo = PlaceHolderImages.find((img) => img.id === "iadc-logo");
 
@@ -38,9 +38,10 @@ export default function VerifyPage() {
       return;
     }
 
-    const certRef = doc(firestore, 'iadc_certificates', id);
+    const certRef = doc(firestore, "iadc_certificates", id);
 
-    const unsubscribe = onSnapshot(certRef, 
+    const unsubscribe = onSnapshot(
+      certRef,
       (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data() as Certificate;
@@ -59,7 +60,7 @@ export default function VerifyPage() {
       },
       (err) => {
         console.error("Error fetching certificate: ", err);
-        setError('An error occurred while trying to verify the certificate. You may not have permission to view it.');
+        setError("An error occurred while trying to verify the certificate. You may not have permission to view it.");
         setIsLoading(false);
       }
     );
@@ -68,10 +69,10 @@ export default function VerifyPage() {
   }, [firestore, id]);
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-GB", { 
-      day: "2-digit", 
-      month: "long", 
-      year: "numeric" 
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
     });
   };
 
@@ -96,60 +97,24 @@ export default function VerifyPage() {
             <CardContent className="p-8">
               {/* IADC Logo */}
               <div className="flex justify-center mb-8">
-                {iadcLogo && (
-                  <Image 
-                    src={iadcLogo.imageUrl} 
-                    alt={iadcLogo.description}
-                    width={150}
-                    height={50}
-                    className="h-12 w-auto"
-                  />
-                )}
+                {iadcLogo && <Image src={iadcLogo.imageUrl} alt={iadcLogo.description} width={150} height={50} className="h-12 w-auto" />}
               </div>
 
               {/* Certificate Details */}
               <div className="space-y-0">
-                <VerificationField 
-                  label="Certificate ID" 
-                  value={certificate.id.replace('CERT-', '').split('-').slice(0, -1).join('-')} 
-                />
-                <VerificationField 
-                  label="Name" 
-                  value={certificate.traineeName} 
-                />
-                <VerificationField 
-                  label="Completed On" 
-                  value={formatDate(certificate.completionDate)} 
-                />
-                {certificate.expirationDate && (
-                  <VerificationField 
-                    label="Expires On" 
-                    value={formatDate(certificate.expirationDate)} 
-                  />
-                )}
-                <VerificationField 
-                  label="Program" 
-                  value={certificate.courseName + (certificate.supplementName ? `, ${certificate.supplementName}` : '')} 
-                />
-                <VerificationField 
-                  label="Provider" 
-                  value={certificate.trainingProvider} 
-                />
-                <VerificationField 
-                  label="Status" 
-                  value={getStatus(certificate.expirationDate)} 
-                />
+                <VerificationField label="Certificate ID" value={certificate.id.replace("CERT-", "").split("-").slice(0, -1).join("-")} />
+                <VerificationField label="Name" value={certificate.traineeName} />
+                <VerificationField label="Completed On" value={formatDate(certificate.completionDate)} />
+                {certificate.expirationDate && <VerificationField label="Expires On" value={formatDate(certificate.expirationDate)} />}
+                <VerificationField label="Program" value={certificate.courseName + (certificate.supplementName ? `, ${certificate.supplementName}` : "")} />
+                <VerificationField label="Provider" value={certificate.trainingProvider} />
+                <VerificationField label="Status" value={getStatus(certificate.expirationDate)} />
               </div>
 
               {/* Go Back Button */}
               <div className="mt-8">
-                <Button 
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
-                  asChild
-                >
-                  <Link href="/search">
-                    Go Back
-                  </Link>
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white" asChild>
+                  <Link href="/search">Go Back</Link>
                 </Button>
               </div>
             </CardContent>
@@ -160,15 +125,11 @@ export default function VerifyPage() {
               <Alert variant="destructive" className="mb-6">
                 <ShieldAlert className="h-4 w-4" />
                 <AlertTitle>Certificate Not Found</AlertTitle>
-                <AlertDescription>
-                  {error || `The certificate ID "${id}" is not valid or could not be found in our records.`}
-                </AlertDescription>
+                <AlertDescription>{error || `The certificate ID "${id}" is not valid or could not be found in our records.`}</AlertDescription>
               </Alert>
-              
-              <p className="text-muted-foreground mb-6">
-                Please check the ID or generate a new certificate.
-              </p>
-              
+
+              <p className="text-muted-foreground mb-6">Please check the ID or generate a new certificate.</p>
+
               <Button asChild className="w-full">
                 <Link href="/">Generate a New Certificate</Link>
               </Button>

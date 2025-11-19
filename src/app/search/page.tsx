@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Search, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 const iadcLogo = PlaceHolderImages.find((img) => img.id === "iadc-logo");
 
 export default function SearchPage() {
-  const [certificateId, setCertificateId] = useState('');
+  const [certificateId, setCertificateId] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const router = useRouter();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!certificateId.trim()) {
-      alert('Please enter a certificate ID');
+      alert("Please enter a certificate ID");
       return;
     }
 
     setIsSearching(true);
-    
+
     // Navigate to verify page with the certificate ID
     router.push(`/verify/${encodeURIComponent(certificateId.trim())}`);
   };
@@ -38,25 +38,13 @@ export default function SearchPage() {
           <CardContent className="p-8">
             {/* IADC Logo */}
             <div className="flex justify-center mb-8">
-              {iadcLogo && (
-                <Image 
-                  src={iadcLogo.imageUrl} 
-                  alt={iadcLogo.description}
-                  width={150}
-                  height={50}
-                  className="h-12 w-auto"
-                />
-              )}
+              {iadcLogo && <Image src={iadcLogo.imageUrl} alt={iadcLogo.description} width={150} height={50} className="h-12 w-auto" />}
             </div>
 
             {/* Title */}
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                Certificate Verification
-              </h1>
-              <p className="text-gray-600">
-                Enter the certificate ID to verify its authenticity
-              </p>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Certificate Verification</h1>
+              <p className="text-gray-600">Enter the certificate ID to verify its authenticity</p>
             </div>
 
             {/* Search Form */}
@@ -76,11 +64,7 @@ export default function SearchPage() {
                 />
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full bg-primary hover:bg-primary/90 text-white"
-                disabled={isSearching}
-              >
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white" disabled={isSearching}>
                 {isSearching ? (
                   <>
                     <Search className="mr-2 h-4 w-4 animate-spin" />
@@ -97,25 +81,11 @@ export default function SearchPage() {
 
             {/* Navigation Links */}
             <div className="mt-8 pt-6 border-t border-gray-200">
-              <div className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="w-full"
-                  asChild
-                >
+              <div className="text-center">
+                <Button variant="outline" className="w-full" asChild>
                   <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Generate New Certificate
-                  </Link>
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="w-full"
-                  asChild
-                >
-                  <Link href="/certificates">
-                    View All Certificates
+                    Admin Panel
                   </Link>
                 </Button>
               </div>
@@ -123,9 +93,7 @@ export default function SearchPage() {
 
             {/* Help Text */}
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-500">
-                Having trouble? Make sure you have the complete certificate ID including all letters and numbers.
-              </p>
+              <p className="text-sm text-gray-500">Having trouble? Make sure you have the complete certificate ID including all letters and numbers.</p>
             </div>
           </CardContent>
         </Card>

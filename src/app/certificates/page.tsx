@@ -1,61 +1,29 @@
-'use client';
+"use client";
 
-import { useCollection } from '@/firebase';
-import type { Certificate } from '@/lib/types';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { List, ShieldAlert } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
+import { useCollection } from "@/firebase";
+import type { Certificate } from "@/lib/types";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { List, ShieldAlert } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { ProtectedRoute } from "@/components/protected-route";
 
-export default function CertificatesPage() {
-  const {
-    data: certificates,
-    loading,
-    error,
-  } = useCollection<Certificate>('iadc_certificates');
+function CertificatesPageContent() {
+  const { data: certificates, loading, error } = useCollection<Certificate>("iadc_certificates");
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="mb-6 flex justify-between items-center">
-        <Button asChild variant="outline">
-          <Link href="/">
-            ← Back to Generator
-          </Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href="/search">
-            Search Certificate
-          </Link>
-        </Button>
-      </div>
-      
+    <div className="container mx-auto px-4 py-8">
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-headline text-2xl">
             <List className="text-primary" />
             All Certificates
           </CardTitle>
-          <CardDescription>
-            A list of all generated certificates stored in the database.
-          </CardDescription>
+          <CardDescription>A list of all generated certificates stored in the database.</CardDescription>
         </CardHeader>
         <CardContent>
           {loading && (
@@ -76,11 +44,7 @@ export default function CertificatesPage() {
 
           {!loading && !error && certificates && (
             <Table>
-              <TableCaption>
-                {certificates.length === 0
-                  ? 'No certificates found.'
-                  : 'A list of all generated certificates.'}
-              </TableCaption>
+              <TableCaption>{certificates.length === 0 ? "No certificates found." : "A list of all generated certificates."}</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead>Trainee Name</TableHead>
@@ -92,13 +56,9 @@ export default function CertificatesPage() {
               <TableBody>
                 {certificates.map((cert) => (
                   <TableRow key={cert.id}>
-                    <TableCell className="font-medium">
-                      {cert.traineeName}
-                    </TableCell>
+                    <TableCell className="font-medium">{cert.traineeName}</TableCell>
                     <TableCell>{cert.courseName}</TableCell>
-                    <TableCell>
-                      {format(new Date(cert.completionDate), 'PPP')}
-                    </TableCell>
+                    <TableCell>{format(new Date(cert.completionDate), "PPP")}</TableCell>
                     <TableCell className="text-right">
                       <Button asChild variant="outline" size="sm">
                         <Link href={`/verify/${cert.id}`}>View</Link>
@@ -111,6 +71,14 @@ export default function CertificatesPage() {
           )}
         </CardContent>
       </Card>
-    </main>
+    </div>
+  );
+}
+
+export default function CertificatesPage() {
+  return (
+    <ProtectedRoute>
+      <CertificatesPageContent />
+    </ProtectedRoute>
   );
 }
