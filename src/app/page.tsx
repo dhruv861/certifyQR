@@ -81,7 +81,7 @@ function HomePage() {
         toast({
           variant: "destructive",
           title: "Error Generating Certificate",
-          description: "success" in result ? "An unexpected error occurred. Please try again." : (result.error || "An unexpected error occurred. Please try again."),
+          description: "An unexpected error occurred. Please try again.",
         });
       }
     } catch (error) {
