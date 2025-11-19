@@ -32,7 +32,8 @@ export async function generateCertificateAction(formData: FormValues): Promise<A
     const protocol = host.startsWith("localhost") ? "http" : "https";
     const baseUrl = `${protocol}://${host}`;
 
-    const verificationUrl = `${baseUrl}/verify/${id}`;
+    // QR code now points to search page with certificate ID prefilled
+    const verificationUrl = `${baseUrl}/search?id=${encodeURIComponent(id)}`;
     const qrCodeDataUri = await QRCode.toDataURL(verificationUrl);
 
     if (!qrCodeDataUri || !qrCodeDataUri.startsWith("data:image/")) {

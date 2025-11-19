@@ -2,16 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { doc, onSnapshot } from "firebase/firestore";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldAlert, Loader2, ArrowLeft } from "lucide-react";
+import { ShieldAlert, Loader2, ArrowLeft, Database, TestTube } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import type { CertificateData, Certificate } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useFirebase } from "@/firebase";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { findCertificateById } from "@/lib/find-certificate";
 
 const iadcLogo = PlaceHolderImages.find((img) => img.id === "iadc-logo");
 
@@ -32,40 +33,38 @@ export default function VerifyPage() {
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
   useEffect(() => {
-    if (!firestore || !id) {
-      setIsLoading(false);
-      setError("Invalid request.");
-      return;
-    }
+    const searchCertificate = async () => {
+      if (!firestore || !id) {
+        setIsLoading(false);
+        setError("Invalid request.");
+        return;
+      }
 
-    const certRef = doc(firestore, "iadc_certificates", id);
+      try {
+        const { certificate: foundCert } = await findCertificateById(firestore, id);
 
-    const unsubscribe = onSnapshot(
-      certRef,
-      (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data() as Certificate;
+        if (foundCert) {
           // Convert date strings from Firestore to Date objects
           setCertificate({
-            ...data,
-            completionDate: new Date(data.completionDate),
-            expirationDate: data.expirationDate ? new Date(data.expirationDate) : undefined,
+            ...foundCert,
+            completionDate: new Date(foundCert.completionDate),
+            expirationDate: foundCert.expirationDate ? new Date(foundCert.expirationDate) : undefined,
           });
           setError(null);
         } else {
-          setError(`The certificate ID "${id}" is not valid or could not be found.`);
+          setError(`The certificate ID "${id}" is not valid or could not be found in any collection.`);
           setCertificate(null);
         }
-        setIsLoading(false);
-      },
-      (err) => {
+      } catch (err) {
         console.error("Error fetching certificate: ", err);
         setError("An error occurred while trying to verify the certificate. You may not have permission to view it.");
+        setCertificate(null);
+      } finally {
         setIsLoading(false);
       }
-    );
+    };
 
-    return () => unsubscribe();
+    searchCertificate();
   }, [firestore, id]);
 
   const formatDate = (date: Date) => {
@@ -96,9 +95,34 @@ export default function VerifyPage() {
           <Card className="shadow-lg">
             <CardContent className="p-8">
               {/* IADC Logo */}
-              <div className="flex justify-center mb-8">
+              <div className="flex justify-center mb-6">
                 {iadcLogo && <Image src={iadcLogo.imageUrl} alt={iadcLogo.description} width={150} height={50} className="h-12 w-auto" />}
               </div>
+
+              {/* Collection Indicator
+              {foundInCollection && (
+                <div className="flex justify-center mb-6">
+                  <Badge 
+                    variant={foundInCollection === 'iadc_certificates' ? "default" : "secondary"}
+                    className={foundInCollection === 'iadc_certificates' 
+                      ? "bg-blue-100 text-blue-800 border-blue-300" 
+                      : "bg-orange-100 text-orange-800 border-orange-300"
+                    }
+                  >
+                    {foundInCollection === 'iadc_certificates' ? (
+                      <>
+                        <Database className="h-3 w-3 mr-1" />
+                        Production Certificate
+                      </>
+                    ) : (
+                      <>
+                        <TestTube className="h-3 w-3 mr-1" />
+                        Test Certificate
+                      </>
+                    )}
+                  </Badge>
+                </div>
+              )} */}
 
               {/* Certificate Details */}
               <div className="space-y-0">
