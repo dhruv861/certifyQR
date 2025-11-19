@@ -1,6 +1,7 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const formSchema = z.object({
+  idNumber: z.string().min(2, "ID Number must be at least 2 characters."),
   traineeName: z.string().min(2, "Name must be at least 2 characters."),
   courseName: z.string().min(3, "Course name must be at least 3 characters."),
   supplementName: z.string().optional(),
@@ -15,6 +16,7 @@ export type FormValues = z.infer<typeof formSchema>;
 
 export type Certificate = {
   id: string;
+  idNumber: string;
   traineeName: string;
   courseName: string;
   supplementName?: string;
@@ -27,12 +29,9 @@ export type Certificate = {
 };
 
 // This is the type used on the client-side, with Date objects
-export type CertificateData = Omit<Certificate, 'completionDate' | 'expirationDate'> & {
+export type CertificateData = Omit<Certificate, "completionDate" | "expirationDate"> & {
   completionDate: Date;
   expirationDate?: Date;
-}
+};
 
-
-export type ActionResult =
-  | { success: true; data: Certificate }
-  | { success: false; error: string };
+export type ActionResult = { success: true; data: Certificate } | { success: false; error: string };

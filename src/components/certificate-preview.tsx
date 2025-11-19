@@ -19,12 +19,11 @@ interface CertificatePreviewProps {
 
 const iadcLogo = PlaceHolderImages.find((img) => img.id === "iadc-logo");
 
-const CertificateField = ({ label, value }: { label: string; value: string | undefined }) => {
-  if (!value) return null;
+const CertificateField = ({ label, value, hrWidthClass = "w-full" }: { label: string; value: string | undefined; hrWidthClass?: string }) => {
   return (
     <div className="pb-6">
-      <p className="text-lg font-semibold text-card-foreground">{value}</p>
-      <hr className="mt-1 border-b-1 border-gray-400" />
+      <p className="text-lg font-semibold text-card-foreground">{value || ""}</p>
+      <hr className={`mt-1 border-b-1 border-gray-400 ${hrWidthClass}`} />
       <p className="text-xs text-muted-foreground">{label}</p>
     </div>
   );
@@ -153,7 +152,7 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
       pdf.addPage();
       pdf.addImage(imgData2, "PNG", 0, 0, pdfWidth, pdfHeight);
 
-      pdf.save(`certificate-${data.id}.pdf`);
+      pdf.save(`certificate-${data.idNumber}.pdf`);
     } catch (error) {
       console.error("PDF generation failed:", error);
       alert("Failed to generate PDF. Please try again.");
@@ -235,15 +234,18 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
 
               <div className="space-y-6 text-sm">
                 <CertificateField label="Course Name" value={data.courseName} />
-                {data.supplementName && <CertificateField label="Supplement Name" value={data.supplementName} />}
+                {<CertificateField label="Supplement Name" value={data.supplementName || ""} />}
 
                 <div className="grid grid-cols-2 gap-x-12 pt-4">
                   <CertificateDateField label="Completion Date" value={data.completionDate} />
                   <CertificateDateField label="Expiration Date" value={data.expirationDate} />
                   <CertificateField label="Training Provider" value={data.trainingProvider} />
-                  <CertificateField label="ID Number" value={data.id.split("-")[1]} />
+                  <CertificateField label="ID Number" value={data.idNumber} />
                   <CertificateField label="Telephone Number" value={data.telephone} />
-                  <CertificateField label="Instructor Name" value={data.instructorName} />
+                </div>
+
+                <div>
+                  <CertificateField label="Instructor Name" value={data.instructorName} hrWidthClass={"w-[370px]"} />
                 </div>
               </div>
             </main>
@@ -253,7 +255,7 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
                 <div>{data.qrCodeDataUri && <Image src={data.qrCodeDataUri} alt="Certificate Verification QR Code" width={80} height={80} />}</div>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground">
-                    Certificate Number: <span className="font-mono">{data.id}</span>
+                    Certificate Number: <span className="font-mono">{data.idNumber}</span>
                   </p>
                 </div>
               </div>

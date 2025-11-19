@@ -10,8 +10,9 @@ service cloud.firestore {
       // In a real-world app, this should be restricted to authenticated users.
       allow create: if true;
       
-      // Deny updates and deletes for security.
-      allow update, delete: if false;
+      // Allow updates and deletes for admin operations.
+      // In a real-world app, this should be restricted to authenticated admin users.
+      allow update, delete: if true;
     }
 
     // By default, deny all other reads and writes

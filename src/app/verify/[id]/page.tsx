@@ -126,7 +126,7 @@ export default function VerifyPage() {
 
               {/* Certificate Details */}
               <div className="space-y-0">
-                <VerificationField label="Certificate ID" value={certificate.id.replace("CERT-", "").split("-").slice(0, -1).join("-")} />
+                <VerificationField label="Certificate ID" value={certificate.id} />
                 <VerificationField label="Name" value={certificate.traineeName} />
                 <VerificationField label="Completed On" value={formatDate(certificate.completionDate)} />
                 {certificate.expirationDate && <VerificationField label="Expires On" value={formatDate(certificate.expirationDate)} />}
