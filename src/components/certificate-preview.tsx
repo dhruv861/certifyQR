@@ -187,8 +187,8 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
         <h3 className="text-lg font-semibold mb-4 text-center text-gray-700">Certificate - Page 1</h3>
         <div id="certificate-to-print" className="bg-card shadow-2xl w-full aspect-[1/1.414] overflow-hidden">
           <div className="relative flex h-full flex-col">
-            <header className="relative h-[18%]">
-              <div className="absolute top-0 left-0 w-full h-full">
+            <header className="relative w-full h-32">
+              <div className="absolute inset-0 w-full h-full">
                 <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
                   <polygon className="fill-primary" points="0,0 100,0 100,85 0,100" />
                   <polygon className="fill-white/20" points="0,100 100,40 100,100" />
