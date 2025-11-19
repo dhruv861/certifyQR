@@ -165,12 +165,38 @@
 }
 
 /* PDF generation image switching */
-#certificate-to-print.preparing-pdf .pdf-hide {
+#certificate-to-print.preparing-pdf .pdf-hide,
+#certificate-page-2.preparing-pdf .pdf-hide {
   display: none !important;
 }
 
-#certificate-to-print.preparing-pdf .pdf-show {
+#certificate-to-print.preparing-pdf .pdf-show,
+#certificate-page-2.preparing-pdf .pdf-show {
   display: block !important;
+}
+
+/* Ensure second page renders correctly for PDF */
+#certificate-page-2.preparing-pdf {
+  background-color: white !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Additional styles for better certificate appearance */
+.print-styles-active #certificate-to-print {
+  font-family: "Arial", sans-serif;
+  line-height: 1.4;
+}
+
+.print-styles-active #certificate-page-2 {
+  font-family: "Arial", sans-serif;
+  line-height: 1.3;
+}
+
+/* Ensure consistent text rendering in PDF */
+.preparing-pdf * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @page {
