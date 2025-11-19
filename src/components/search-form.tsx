@@ -20,7 +20,7 @@ export function SearchForm() {
 
   // Check for certificate ID in URL parameters (from QR code scan)
   useEffect(() => {
-    const idFromUrl = searchParams.get('id');
+    const idFromUrl = searchParams.get("id");
     if (idFromUrl) {
       setCertificateId(idFromUrl);
     }
@@ -51,16 +51,14 @@ export function SearchForm() {
             </div>
 
             {/* QR Code Detection Message */}
-            {searchParams.get('id') && (
+            {searchParams.get("id") && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-md">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <Search className="h-5 w-5 text-green-600" />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-green-800">
-                      Certificate ID detected from QR code! Click "Search" to verify.
-                    </p>
+                    <p className="text-sm font-medium text-green-800">Certificate ID detected from QR code! Click "Search" to verify.</p>
                   </div>
                 </div>
               </div>
