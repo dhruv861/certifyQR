@@ -34,6 +34,19 @@ export default function CertificatesPage() {
 
   return (
     <main className="container mx-auto px-4 py-8">
+      <div className="mb-6 flex justify-between items-center">
+        <Button asChild variant="outline">
+          <Link href="/">
+            ← Back to Generator
+          </Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/search">
+            Search Certificate
+          </Link>
+        </Button>
+      </div>
+      
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-headline text-2xl">

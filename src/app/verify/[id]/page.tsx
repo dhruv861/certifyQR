@@ -3,14 +3,24 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { CertificatePreview } from '@/components/certificate-preview';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from 'next/image';
+import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { ShieldAlert, ShieldCheck, Loader2 } from 'lucide-react';
+import { ShieldAlert, Loader2, ArrowLeft } from 'lucide-react';
 import type { CertificateData, Certificate } from '@/lib/types';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useFirebase } from '@/firebase';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+
+const iadcLogo = PlaceHolderImages.find((img) => img.id === "iadc-logo");
+
+const VerificationField = ({ label, value }: { label: string; value: string }) => (
+  <div className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0">
+    <span className="text-gray-600 font-medium">{label}:</span>
+    <span className="text-gray-900 font-semibold text-right">{value}</span>
+  </div>
+);
 
 export default function VerifyPage() {
   const params = useParams();
@@ -26,7 +36,7 @@ export default function VerifyPage() {
       setIsLoading(false);
       setError("Invalid request.");
       return;
-    };
+    }
 
     const certRef = doc(firestore, 'iadc_certificates', id);
 
@@ -54,56 +64,118 @@ export default function VerifyPage() {
       }
     );
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, [firestore, id]);
 
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("en-GB", { 
+      day: "2-digit", 
+      month: "long", 
+      year: "numeric" 
+    });
+  };
+
+  const getStatus = (expirationDate?: Date) => {
+    if (!expirationDate) return "Active";
+    const now = new Date();
+    return expirationDate > now ? "Active" : "Expired";
+  };
+
   return (
-    <main className="container mx-auto flex min-h-screen flex-col items-center justify-center px-4 py-8">
-      <Card className="w-full max-w-4xl shadow-2xl">
-        <CardHeader>
-          <CardTitle className="text-center text-3xl font-bold text-primary">
-            Certificate Verification
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-             <div className="flex min-h-[300px] flex-col items-center justify-center gap-4">
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
-              <p className="font-headline text-lg text-muted-foreground">
-                Verifying Certificate...
-              </p>
-            </div>
-          ) : certificate ? (
-            <div className="space-y-6">
-              <Alert variant="default" className="bg-green-100 dark:bg-green-900 border-green-500">
-                <ShieldCheck className="h-4 w-4 text-green-700 dark:text-green-300" />
-                <AlertTitle className="text-green-800 dark:text-green-200">Certificate Verified</AlertTitle>
-                <AlertDescription className="text-green-700 dark:text-green-300">
-                  This certificate is valid. The details below match our records.
-                </AlertDescription>
-              </Alert>
-              <CertificatePreview data={certificate} isLoading={false} />
-            </div>
-          ) : (
-            <div className="space-y-6 text-center">
-              <Alert variant="destructive">
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md">
+        {isLoading ? (
+          <Card className="shadow-lg">
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+              <p className="text-lg text-muted-foreground">Verifying Certificate...</p>
+            </CardContent>
+          </Card>
+        ) : certificate ? (
+          <Card className="shadow-lg">
+            <CardContent className="p-8">
+              {/* IADC Logo */}
+              <div className="flex justify-center mb-8">
+                {iadcLogo && (
+                  <Image 
+                    src={iadcLogo.imageUrl} 
+                    alt={iadcLogo.description}
+                    width={150}
+                    height={50}
+                    className="h-12 w-auto"
+                  />
+                )}
+              </div>
+
+              {/* Certificate Details */}
+              <div className="space-y-0">
+                <VerificationField 
+                  label="Certificate ID" 
+                  value={certificate.id.replace('CERT-', '').split('-').slice(0, -1).join('-')} 
+                />
+                <VerificationField 
+                  label="Name" 
+                  value={certificate.traineeName} 
+                />
+                <VerificationField 
+                  label="Completed On" 
+                  value={formatDate(certificate.completionDate)} 
+                />
+                {certificate.expirationDate && (
+                  <VerificationField 
+                    label="Expires On" 
+                    value={formatDate(certificate.expirationDate)} 
+                  />
+                )}
+                <VerificationField 
+                  label="Program" 
+                  value={certificate.courseName + (certificate.supplementName ? `, ${certificate.supplementName}` : '')} 
+                />
+                <VerificationField 
+                  label="Provider" 
+                  value={certificate.trainingProvider} 
+                />
+                <VerificationField 
+                  label="Status" 
+                  value={getStatus(certificate.expirationDate)} 
+                />
+              </div>
+
+              {/* Go Back Button */}
+              <div className="mt-8">
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  asChild
+                >
+                  <Link href="/search">
+                    Go Back
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="shadow-lg">
+            <CardContent className="p-8 text-center">
+              <Alert variant="destructive" className="mb-6">
                 <ShieldAlert className="h-4 w-4" />
-                <AlertTitle>Certificate Not Found or Error</AlertTitle>
+                <AlertTitle>Certificate Not Found</AlertTitle>
                 <AlertDescription>
                   {error || `The certificate ID "${id}" is not valid or could not be found in our records.`}
                 </AlertDescription>
               </Alert>
-               <p className="text-muted-foreground">
+              
+              <p className="text-muted-foreground mb-6">
                 Please check the ID or generate a new certificate.
               </p>
-               <Button asChild>
+              
+              <Button asChild className="w-full">
                 <Link href="/">Generate a New Certificate</Link>
               </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </main>
   );
 }

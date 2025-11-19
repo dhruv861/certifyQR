@@ -117,7 +117,13 @@ export default function Home() {
         </p>
       </header>
 
-      <div className="mb-8 flex justify-end">
+      <div className="mb-8 flex justify-end gap-4">
+        <Button asChild variant="outline">
+          <Link href="/search">
+            <Award className="mr-2 h-4 w-4" />
+            Verify Certificate
+          </Link>
+        </Button>
         <Button asChild variant="outline">
           <Link href="/certificates">
             <List className="mr-2 h-4 w-4" />
