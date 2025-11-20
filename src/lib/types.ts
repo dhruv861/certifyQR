@@ -17,6 +17,7 @@ export type FormValues = z.infer<typeof formSchema>;
 export type Certificate = {
   id: string;
   idNumber: string;
+  certificateNumber: string; // Auto-generated certificate number
   traineeName: string;
   courseName: string;
   supplementName?: string;
@@ -35,3 +36,13 @@ export type CertificateData = Omit<Certificate, "completionDate" | "expirationDa
 };
 
 export type ActionResult = { success: true; data: Certificate } | { success: false; error: string };
+
+// Import certificate number generation utility
+import { generateTimestampCertificateNumber } from "./certificate-utils";
+
+// Utility function to generate certificate number using alphanumeric timestamp-based approach
+// Format: YYMMDDHH-MMSSXX (e.g., 25N20K14-30L2F9)
+// Benefits: Alphanumeric, chronologically sortable, professional looking, highly unique, consistent
+export function generateCertificateNumber(): string {
+  return generateTimestampCertificateNumber();
+}

@@ -79,8 +79,9 @@ export function QrCertForm({ onGenerate, isGenerating }: QrCertFormProps) {
                     ID Number
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., 61F3799A-EBDDC9" {...field} />
+                    <Input placeholder="Enter trainee ID number" {...field} />
                   </FormControl>
+                  <FormDescription>Trainee's identification number (will be displayed on the certificate)</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -30,7 +30,7 @@ export function SearchForm() {
     e.preventDefault();
 
     if (!certificateId.trim()) {
-      alert("Please enter a certificate ID");
+      alert("Please enter a certificate number");
       return;
     }
 
@@ -58,7 +58,7 @@ export function SearchForm() {
                     <Search className="h-5 w-5 text-green-600" />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-green-800">Certificate ID detected from QR code! Click "Search" to verify.</p>
+                    <p className="text-sm font-medium text-green-800">Certificate Number detected from QR code! Click "Search" to verify.</p>
                   </div>
                 </div>
               </div>
@@ -68,12 +68,12 @@ export function SearchForm() {
             <form onSubmit={handleSearch} className="space-y-6" style={{ display: "block" }}>
               <div>
                 <label htmlFor="certificateId" className="block text-sm font-medium text-red-600 mb-3">
-                  Enter Student Certificate ID or Instructor Number
+                  Enter Certificate Number
                 </label>
                 <Input
                   id="certificateId"
                   type="text"
-                  placeholder="61F3799A-EBDDC9"
+                  placeholder="25N20K14-30L2F9"
                   value={certificateId}
                   onChange={(e) => setCertificateId(e.target.value)}
                   className="w-full h-12 text-lg border-2 border-gray-300 rounded-md px-4 focus:border-red-600 focus:ring-2 focus:ring-red-100"
@@ -102,7 +102,7 @@ export function SearchForm() {
 
             {/* Help Text */}
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-500">Having trouble? Make sure you have the complete certificate ID including all letters and numbers.</p>
+              <p className="text-sm text-gray-500">Having trouble? Make sure you have the complete certificate number including all letters and numbers.</p>
             </div>
           </CardContent>
         </Card>
