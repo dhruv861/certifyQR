@@ -22,8 +22,8 @@ const iadcLogo = PlaceHolderImages.find((img) => img.id === "iadc-logo");
 const CertificateField = ({ label, value, hrWidthClass = "w-full" }: { label: string; value: string | undefined; hrWidthClass?: string }) => {
   return (
     <div className="pb-6">
-      <p className="text-lg font-semibold text-card-foreground">{value || ""}</p>
-      <hr className={`mt-1 border-b-1 border-gray-400 ${hrWidthClass}`} />
+      <p className="text-lg text-card-foreground">{value || ""}</p>
+      <hr className={` border-b-2 border-gray-400 ${hrWidthClass}`} />
       <p className="text-xs text-muted-foreground">{label}</p>
     </div>
   );
@@ -366,8 +366,8 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
 
               <div className="text-center my-5">
                 <p className="text-2xl font-bold text-card-foreground">{data.traineeName}</p>
+                <hr className="border-b-2 border-gray-400 max-w-xs mx-auto" />
                 <p className="text-xs text-muted-foreground">Trainee Name</p>
-                <hr className="mt-1 border-b-gray-300 max-w-xs mx-auto" />
               </div>
 
               <div className="space-y-6 text-sm">
