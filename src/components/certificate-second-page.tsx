@@ -19,8 +19,8 @@ export function CertificateSecondPage({ data }: CertificateSecondPageProps) {
     });
   };
 
-  // Use the idNumber from the form data
-  const certificateNumber = data.idNumber;
+  // Use the auto-generated certificateNumber
+  const certificateNumber = data.certificateNumber;
 
   return (
     <div id="certificate-page-2" className="bg-white w-full aspect-[1/1.414] p-6 flex gap-6 px-9 pdf-page-2-container">

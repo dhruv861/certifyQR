@@ -48,13 +48,13 @@ function HomePage() {
         const newCertificate = result.data;
         const certRef = doc(firestore, "iadc_certificates", newCertificate.id);
 
-        // Check if certificate ID already exists
+        // Check if certificate number already exists (highly unlikely due to timestamp + random generation)
         const existingDoc = await getDoc(certRef);
         if (existingDoc.exists()) {
           toast({
             variant: "destructive",
-            title: "Duplicate Certificate ID",
-            description: `A certificate with ID "${newCertificate.idNumber}" already exists. Please use a different ID Number.`,
+            title: "Duplicate Certificate Number",
+            description: `A certificate with number "${newCertificate.certificateNumber}" already exists. Please try generating again.`,
           });
           setIsLoading(false);
           return;

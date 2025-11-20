@@ -151,7 +151,7 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
       removePdfClasses(pdfPage1Element);
       removePdfClasses(pdfPage2Element);
 
-      pdf.save(`certificate-${data.idNumber}.pdf`);
+      pdf.save(`certificate-${data.certificateNumber}.pdf`);
     } catch (error) {
       console.error("PDF generation failed:", error);
       alert("Failed to generate PDF. Please try again.");
@@ -304,7 +304,7 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
               <div>{data.qrCodeDataUri && <img src={data.qrCodeDataUri} alt="QR Code" style={{ width: "80px", height: "80px" }} />}</div>
               <div style={{ textAlign: "right" }}>
                 <p style={{ fontSize: "12px", color: "#666", margin: "0" }}>
-                  Certificate Number: <span style={{ fontFamily: "monospace" }}>{data.idNumber}</span>
+                  Certificate Number: <span style={{ fontFamily: "monospace" }}>{data.certificateNumber}</span>
                 </p>
               </div>
             </div>
@@ -393,7 +393,7 @@ export function CertificatePreview({ data, isLoading }: CertificatePreviewProps)
                 <div>{data.qrCodeDataUri && <Image src={data.qrCodeDataUri} alt="Certificate Verification QR Code" width={80} height={80} />}</div>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground">
-                    Certificate Number: <span className="font-mono">{data.idNumber}</span>
+                    Certificate Number: <span className="font-mono">{data.certificateNumber}</span>
                   </p>
                 </div>
               </div>

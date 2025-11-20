@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import QRCode from "qrcode";
 import { headers } from "next/headers";
 import type { Certificate, FormValues, ActionResult } from "@/lib/types";
+import { generateCertificateNumber } from "@/lib/types";
 // NOTE: No longer importing server-side firebase
 
 const formSchema = z.object({
@@ -23,19 +24,19 @@ export async function generateCertificateAction(formData: FormValues): Promise<A
   try {
     const validatedData = formSchema.parse(formData);
 
-    // This action no longer writes to Firestore.
-    // It only generates the QR code and returns the data.
-    // Use the user-provided idNumber as the certificate ID
+    // Generate a unique certificate number first (this will be the primary identifier)
+    const certificateNumber = generateCertificateNumber();
 
-    const id = `${validatedData.idNumber}`;
+    // Use the certificate number as the document ID in Firestore
+    const id = certificateNumber;
 
     const headersList = await headers();
     const host = headersList.get("host") || "localhost:3000";
     const protocol = host.startsWith("localhost") ? "http" : "https";
     const baseUrl = `${protocol}://${host}`;
 
-    // QR code now points to search page with certificate ID prefilled
-    const verificationUrl = `${baseUrl}/search?id=${encodeURIComponent(id)}`;
+    // QR code now points to search page with certificate number prefilled
+    const verificationUrl = `${baseUrl}/search?id=${encodeURIComponent(certificateNumber)}`;
     const qrCodeDataUri = await QRCode.toDataURL(verificationUrl);
 
     if (!qrCodeDataUri || !qrCodeDataUri.startsWith("data:image/")) {
@@ -47,6 +48,7 @@ export async function generateCertificateAction(formData: FormValues): Promise<A
       completionDate: validatedData.completionDate.toISOString(),
       expirationDate: validatedData.expirationDate?.toISOString(),
       id,
+      certificateNumber,
       qrCodeDataUri,
     };
 

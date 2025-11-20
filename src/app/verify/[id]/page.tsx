@@ -17,9 +17,9 @@ import { findCertificateById } from "@/lib/find-certificate";
 const iadcLogo = PlaceHolderImages.find((img) => img.id === "iadc-logo");
 
 const VerificationField = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0">
-    <span className="text-gray-600 font-medium">{label}:</span>
-    <span className="text-gray-900 font-semibold text-right">{value}</span>
+  <div className="flex py-3 border-b border-gray-200 last:border-b-0">
+    <span className="text-gray-600 font-medium min-w-[140px]">{label}:</span>
+    <span className="text-gray-900 font-semibold flex-1">{value}</span>
   </div>
 );
 
@@ -52,7 +52,7 @@ export default function VerifyPage() {
           });
           setError(null);
         } else {
-          setError(`The certificate ID "${id}" is not valid or could not be found in any collection.`);
+          setError(`The certificate number "${id}" is not valid or could not be found in any collection.`);
           setCertificate(null);
         }
       } catch (err) {
@@ -126,7 +126,7 @@ export default function VerifyPage() {
 
               {/* Certificate Details */}
               <div className="space-y-0">
-                <VerificationField label="Certificate ID" value={certificate.id} />
+                <VerificationField label="Certificate ID" value={certificate.certificateNumber} />
                 <VerificationField label="Name" value={certificate.traineeName} />
                 <VerificationField label="Completed On" value={formatDate(certificate.completionDate)} />
                 {certificate.expirationDate && <VerificationField label="Expires On" value={formatDate(certificate.expirationDate)} />}
@@ -149,10 +149,10 @@ export default function VerifyPage() {
               <Alert variant="destructive" className="mb-6">
                 <ShieldAlert className="h-4 w-4" />
                 <AlertTitle>Certificate Not Found</AlertTitle>
-                <AlertDescription>{error || `The certificate ID "${id}" is not valid or could not be found in our records.`}</AlertDescription>
+                <AlertDescription>{error || `The certificate number "${id}" is not valid or could not be found in our records.`}</AlertDescription>
               </Alert>
 
-              <p className="text-muted-foreground mb-6">Please check the ID or generate a new certificate.</p>
+              <p className="text-muted-foreground mb-6">Please check the certificate number or generate a new certificate.</p>
 
               <Button asChild className="w-full">
                 <Link href="/">Generate a New Certificate</Link>
