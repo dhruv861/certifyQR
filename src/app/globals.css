@@ -182,6 +182,41 @@
   print-color-adjust: exact !important;
 }
 
+/* Ensure completion card has gradient background in PDF (excluding header) */
+.preparing-pdf .pdf-completion-card:not(.pdf-card-header),
+.pdf-completion-card.preparing-pdf:not(.pdf-card-header) {
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%) !important;
+  background-color: #ffffff !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Apply gradient background to card body, not header */
+body.pdf-generation-active .pdf-completion-card,
+#certificate-page-2.preparing-pdf .pdf-completion-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%) !important;
+  background-color: #ffffff !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Ensure content area has gradient but preserve header */
+body.pdf-generation-active .pdf-card-content,
+.pdf-card-content.preparing-pdf {
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%) !important;
+  background-color: #ffffff !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Protect the red header from white background override */
+body.pdf-generation-active .pdf-card-header,
+.pdf-card-header.preparing-pdf {
+  background-color: #d41826 !important;
+  background-image: none !important;
+  background: #d41826 !important;
+}
+
 /* Additional styles for better certificate appearance */
 .print-styles-active #certificate-to-print {
   font-family: "Arial", sans-serif;
@@ -202,4 +237,206 @@
 @page {
   size: A4 portrait;
   margin: 0;
+}
+
+/* PDF Generation Specific Styles */
+body.pdf-generation-active {
+  zoom: 1 !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+
+body.pdf-generation-active * {
+  zoom: 1 !important;
+  transform: none !important;
+}
+
+/* Certificate PDF Styles */
+.pdf-certificate-container.preparing-pdf {
+  width: 794px !important;
+  height: 1123px !important;
+  position: relative !important;
+  transform: none !important;
+  zoom: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.pdf-certificate-content.preparing-pdf {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.pdf-header.preparing-pdf {
+  height: 120px !important;
+  width: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.pdf-main-content.preparing-pdf {
+  position: absolute !important;
+  top: 120px !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  padding: 60px !important;
+}
+
+/* Page 2 PDF Styles */
+.pdf-page-2-container.preparing-pdf {
+  width: 794px !important;
+  height: 1123px !important;
+  position: relative !important;
+  transform: none !important;
+  zoom: 1 !important;
+  margin: 0 !important;
+  padding: 48px 72px !important;
+  display: flex !important;
+  gap: 48px !important;
+}
+
+.pdf-left-section.preparing-pdf {
+  width: 50% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Compact left section styles for PDF */
+.pdf-description-section.preparing-pdf {
+  gap: 8px !important;
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+
+.pdf-description-section.preparing-pdf p {
+  margin-bottom: 4px !important;
+}
+
+.pdf-logo-container.preparing-pdf {
+  margin-bottom: 2px !important;
+}
+
+.pdf-logo-container.preparing-pdf img {
+  width: 80px !important;
+  height: 26px !important;
+  margin-bottom: 4px !important;
+}
+
+.pdf-completion-card-container.preparing-pdf {
+  width: 50% !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+}
+
+.pdf-completion-card.preparing-pdf {
+  width: 340px !important;
+  max-width: none !important;
+  position: relative !important;
+  transform: none !important;
+  zoom: 1 !important;
+  background-color: white !important;
+  background-image: none !important;
+}
+
+.pdf-card-header.preparing-pdf {
+  padding: 1px 4px 5px 4px !important;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+}
+
+.pdf-card-content.preparing-pdf {
+  padding: 6px !important;
+}
+
+/* Field alignment fixes for PDF */
+.pdf-field-row.preparing-pdf {
+  display: flex !important;
+  align-items: flex-end !important;
+  margin-top: 2px !important;
+  height: 14px !important;
+}
+
+.pdf-field-row.preparing-pdf:first-child {
+  margin-top: 0 !important;
+}
+
+.pdf-field-label.preparing-pdf {
+  font-size: 8px !important;
+  font-weight: bold !important;
+  color: #374151 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 2px !important;
+}
+
+.pdf-field-underline.preparing-pdf {
+  flex-grow: 1 !important;
+  border-bottom: 1px solid #9ca3af !important;
+  margin-left: 4px !important;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  height: 14px !important;
+  max-height: 14px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  padding-bottom: 2px !important;
+  box-sizing: border-box !important;
+}
+
+.pdf-field-text.preparing-pdf {
+  font-size: 10px !important;
+  color: #111827 !important;
+  line-height: 1 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  vertical-align: baseline !important;
+}
+
+.pdf-date-row.preparing-pdf,
+.pdf-provider-row.preparing-pdf {
+  display: flex !important;
+  gap: 4px !important;
+  margin-top: 2px !important;
+}
+
+.pdf-date-row.preparing-pdf > div,
+.pdf-provider-row.preparing-pdf > div {
+  min-height: 14px !important;
+  height: 14px !important;
+}
+
+/* Additional alignment overrides for better text positioning */
+.preparing-pdf .pdf-field-underline {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+}
+
+.preparing-pdf .pdf-field-text {
+  position: relative !important;
+  bottom: 0 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Ensure zoom-independent positioning */
+.preparing-pdf {
+  zoom: 1 !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+}
+
+/* Force consistent rendering */
+.pdf-generation-active .container,
+.pdf-generation-active .grid,
+.pdf-generation-active .flex {
+  zoom: 1 !important;
+  transform: none !important;
 }
