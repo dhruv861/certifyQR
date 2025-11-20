@@ -26,7 +26,7 @@ const formSchema = z
     telephone: z
       .string()
       .optional()
-      .refine((val) => !val || /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(val), "Invalid phone number format."),
+      .refine((val) => !val || /^[+]?[0-9\s\-().]{7,20}$/.test(val), "Invalid phone number format. Use numbers, spaces, hyphens, parentheses, and + sign."),
     instructorName: z.string().min(2, "Instructor name is required."),
   })
   .refine((data) => !data.expirationDate || data.expirationDate > data.completionDate, {
@@ -195,9 +195,9 @@ export function QrCertForm({ onGenerate, isGenerating }: QrCertFormProps) {
                     Telephone Number
                   </FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="(123) 456-7890" {...field} />
+                    <Input type="tel" placeholder="+1-123-456-7890 or (123) 456-7890" {...field} />
                   </FormControl>
-                  <FormDescription>Optional contact number.</FormDescription>
+                  <FormDescription>Optional contact number. Use +, -, (), spaces, and numbers.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
